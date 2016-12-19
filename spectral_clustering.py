@@ -18,7 +18,7 @@ def generate_data(n_samples, data_type = 'circles'):
 			Number of samples to generate
 		* data_type : {default 'circles', 'swissroll', 'moons'} 
 			Type of dataset to generate
-		
+
 		__ RETURNS --
 		X : numpy.ndarray, shape (n_samples, n_features)
 			Dataset with n_samples, each sample with n_features
@@ -33,7 +33,7 @@ def generate_data(n_samples, data_type = 'circles'):
 	return X
 
 def plot( X, labels ):
-	''' 
+	'''
 		-- DESCRIPTION --
 		Plot dataset clusters
 
@@ -42,9 +42,9 @@ def plot( X, labels ):
 			Dataset
 		* labels : numpy.ndarray, shape (n_samples, 1)
 			Cluster labels
-	
+
 	'''
-    
+
 	if X.shape[1] == 2:
         plt.scatter( X[ :, 0 ], X[ :, 1 ], c=labels )
     elif X.shape[1] == 3:
@@ -56,7 +56,7 @@ def plot( X, labels ):
     plt.show()
 
 class SpectralClustering:
-	''' 
+	'''
 		-- DESCRIPTION --
 		Apply Spectral Clustering using Graph Laplacian
 
@@ -91,7 +91,7 @@ class SpectralClustering:
         self.weight_fn = weight_fn
 
     def fit( self, X ):
-		''' 
+		'''
 			-- DESCRIPTION --
 			Builds the affinity graph/similarity matrix using a distance and weight function
 			Computes Graph Laplacian of the affinity graph 
@@ -102,7 +102,7 @@ class SpectralClustering:
 			-- PARAMS --
 			* X : numpy.ndarray, shape (n_samples, n_features)
 				Set of data for spectral clustering
-		
+
 		'''
         self.X = X
         self._build_affinity_graph()
@@ -112,10 +112,10 @@ class SpectralClustering:
         self._project_plot()
 
     def _build_affinity_graph( self ):
-        ''' 
+        '''
 			-- DESCRIPTION --
 			Compute graph of affinities between instances in the dataset using the distance function
-			
+
 		'''
         dist = np.zeros( ( len(self.X), len(self.X) ) )
         for i in range(len(self.X)):
@@ -145,10 +145,9 @@ class SpectralClustering:
 		self.D = np.diag( d )
 
     def _compute_graph_laplacian( self ):
-        ''' 
+        '''
 			-- DESCRIPTION --
-			Compute normalized/unnormalized laplacian of affinity graph 
-			
+			Compute normalized/unnormalized laplacian of affinity graph
 		'''
         if self.laplacian == 'norm_sym':
             D_minus_half = scipy.linalg.fractional_matrix_power(np.linalg.pinv(self.D), 0.5) 
@@ -161,11 +160,11 @@ class SpectralClustering:
             raise ValueError( "Unsupported laplacian type: {}".format( self.laplacian ) )
 
     def _compute_embedding( self ):
-        ''' 
+        '''
 			-- DESCRIPTION --
 			Compute spectral embeddings of the dataset by solving the Laplacian eigenproblem 
-			(Find the leading eigenvectors of the Laplacian as embeddings) 
-			
+			(Find the leading eigenvectors of the Laplacian as embeddings) 	
+
 		'''
 
         K = self.n_components * 10
@@ -185,7 +184,7 @@ class SpectralClustering:
 			self.embedding = self.eigenvectors[ :, :self.n_components ]
 
     def _clustering( self ):
-		''' 
+		'''
 			-- DECRIPTION --
 			Cluster spectral embeddings using centroid-based clustering algorithms 
 			Obtain cluster labels for instances in the dataset
