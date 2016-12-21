@@ -22,7 +22,7 @@ class KMeansPP:
         self.n_clusters = n_clusters
         self.n_iters = n_iters
 
-    def fit( self, X )
+    def fit( self, X ):
         ''' 
             -- DESCRIPTION --
             Initializes the centroids and assigns each data point into  a cluster
